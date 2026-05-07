@@ -55,7 +55,7 @@ export class SimpleGit extends GitManager {
                         this.plugin.settings.basePath
                     );
                 } else if (!ignoreError) {
-                    new Notice("ObsidianGit: Base path does not exist");
+                    new Notice("ObsidianGit: 基础路径不存在");
                 }
             }
             this.absoluteRepoPath = basePath;
@@ -258,7 +258,7 @@ export class SimpleGit extends GitManager {
                     obscure,
                     placeholder:
                         data.length > 60
-                            ? "Enter a response to the message."
+                            ? "请输入响应消息。"
                             : data,
                 }).openAndGetResult();
                 notice?.hide();
@@ -691,7 +691,7 @@ export class SimpleGit extends GitManager {
                     } catch (err) {
                         this.plugin.displayError(
                             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                            `Pull failed (${this.plugin.settings.syncMethod}): ${"message" in err ? err.message : err}`
+                            `拉取失败 (${this.plugin.settings.syncMethod}): ${"message" in err ? err.message : err}`
                         );
                         return;
                     }
@@ -706,7 +706,7 @@ export class SimpleGit extends GitManager {
                     } catch (err) {
                         this.plugin.displayError(
                             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                            `Sync failed (${this.plugin.settings.syncMethod}): ${"message" in err ? err.message : err}`
+                            `同步失败 (${this.plugin.settings.syncMethod}): ${"message" in err ? err.message : err}`
                         );
                     }
                 }

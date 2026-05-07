@@ -80,15 +80,15 @@ export class IsomorphicGit extends GitManager {
             },
             onAuthFailure: async () => {
                 new Notice(
-                    "Authentication failed. Please try with different credentials"
+                    "认证失败。请使用不同的凭据重试"
                 );
                 const username = await new GeneralModal(this.plugin, {
-                    placeholder: "Specify your username",
+                    placeholder: "请输入您的用户名",
                 }).openAndGetResult();
                 if (username) {
                     const password = await new GeneralModal(this.plugin, {
                         placeholder:
-                            "Specify your password/personal access token",
+                            "请输入您的密码/个人访问令牌",
                         obscure: true,
                     }).openAndGetResult();
                     if (password) {

@@ -291,7 +291,7 @@ export default class ObsidianGit extends Plugin {
         });
         this.addRibbonIcon(
             "git-pull-request",
-            "Open Git source control",
+            "打开 Git 源代码控制",
             async () => {
                 const leafs = this.app.workspace.getLeavesOfType(
                     SOURCE_CONTROL_VIEW_CONFIG.type
@@ -312,7 +312,7 @@ export default class ObsidianGit extends Plugin {
         );
 
         this.registerHoverLinkSource(SOURCE_CONTROL_VIEW_CONFIG.type, {
-            display: "Git View",
+            display: "Git 视图",
             defaultMod: true,
         });
 
@@ -449,7 +449,7 @@ export default class ObsidianGit extends Plugin {
                 gitManager instanceof FileSystemAdapter
             ) {
                 menu.addItem((item) => {
-                    item.setTitle("Open in default app")
+                    item.setTitle("用默认应用打开")
                         .setIcon("arrow-up-right")
                         .setSection("action")
                         .onClick((_) => {
@@ -457,7 +457,7 @@ export default class ObsidianGit extends Plugin {
                         });
                 });
                 menu.addItem((item) => {
-                    item.setTitle("Show in system explorer")
+                    item.setTitle("在系统资源管理器中显示")
                         .setIcon("arrow-up-right")
                         .setSection("action")
                         .onClick((_) => {

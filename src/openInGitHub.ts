@@ -29,7 +29,7 @@ export async function openLineInGitHub(
             );
         }
     } else {
-        new Notice("It seems like you are not using GitHub");
+        new Notice("看起来您没有使用 GitHub");
     }
 }
 
@@ -48,7 +48,7 @@ export async function openHistoryInGitHub(file: TFile, manager: GitManager) {
             `https://github.com/${user}/${repo}/commits/${branch}/${filePath}`
         );
     } else {
-        new Notice("It seems like you are not using GitHub");
+        new Notice("看起来您没有使用 GitHub");
     }
 }
 
@@ -105,7 +105,7 @@ async function getData(
                 } else {
                     return {
                         result: "failure",
-                        reason: "Failed to get remote url of submodule",
+                        reason: "获取子模块远程 URL 失败",
                     };
                 }
             }
@@ -115,14 +115,14 @@ async function getData(
     if (remoteBranch == null) {
         return {
             result: "failure",
-            reason: "Remote branch is not configured",
+            reason: "远程分支未配置",
         };
     }
 
     if (branch == null) {
         return {
             result: "failure",
-            reason: "Failed to get current branch name",
+            reason: "获取当前分支名称失败",
         };
     }
 
@@ -132,7 +132,7 @@ async function getData(
         if (remoteUrl == null) {
             return {
                 result: "failure",
-                reason: "Failed to get remote url",
+                reason: "获取远程 URL 失败",
             };
         }
     }
@@ -142,7 +142,7 @@ async function getData(
     if (res == null) {
         return {
             result: "failure",
-            reason: "Could not parse remote url",
+            reason: "无法解析远程 URL",
         };
     } else {
         const [isGitHub, httpsUser, httpsRepo, sshUser, sshRepo] = res;
