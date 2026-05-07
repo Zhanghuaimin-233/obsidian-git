@@ -2,6 +2,78 @@
 
 A powerful community plugin for [Obsidian.md](Obsidian.md) that brings Git integration right into your vault. Automatically commit, pull, push, and see your changes — all within Obsidian.
 
+## 🌏 中文汉化版
+
+本分支 (`release-2.38.2`) 是基于原版 v2.38.2 的**完整中文汉化版本**。
+
+### 汉化内容
+
+- ✅ 所有命令名称（42个命令）
+- ✅ 设置界面（名称、描述、占位符、验证消息）
+- ✅ 通知消息（Notice、displayMessage、displayError）
+- ✅ 模态框界面（分支、文件变更、自定义消息、丢弃、忽略）
+- ✅ 源代码控制视图
+- ✅ 历史视图
+- ✅ 状态栏显示
+- ✅ 常量和默认值
+
+### 安装方法
+
+1. 从本分支构建插件（见下方构建说明）
+2. 将 `main.js`、`manifest.json`、`styles.css` 复制到 Obsidian 库的 `.obsidian/plugins/obsidian-git/` 目录
+3. 在 Obsidian 设置中启用插件
+4. 重启 Obsidian
+
+### 构建说明
+
+```bash
+# 克隆仓库
+git clone https://github.com/Zhanghuaimin-233/obsidian-git.git
+cd obsidian-git
+
+# 切换到汉化分支
+git checkout release-2.38.2
+
+# 安装依赖
+npm install
+
+# 生产构建
+npm run build
+```
+
+构建产物：
+- `main.js` - 主要插件代码（约 756KB）
+- `manifest.json` - 插件元数据
+- `styles.css` - 插件样式（如果有）
+
+### 汉化文档
+
+详细的汉化指南和构建说明请参阅：[docs/localization-guide.md](docs/localization-guide.md)
+
+### 术语对照
+
+| 英文 | 中文 |
+|------|------|
+| Commit | 提交 |
+| Push | 推送 |
+| Pull | 拉取 |
+| Fetch | 获取 |
+| Branch | 分支 |
+| Merge | 合并 |
+| Conflict | 冲突 |
+| Repository | 仓库 |
+| Remote | 远程 |
+| Stage | 暂存 |
+| Stash | 储藏 |
+| Tag | 标签 |
+| Checkout | 切换 |
+| Clone | 克隆 |
+| Diff | 差异 |
+| Log | 日志 |
+| Status | 状态 |
+
+---
+
 ## 📚 Documentation
 
 All setup instructions (including mobile), common issues, tips, and advanced configuration can be found in the 📖 [full documentation](https://publish.obsidian.md/git-doc).
