@@ -152,7 +152,7 @@ export class IsomorphicGit extends GitManager {
         let notice: Notice | undefined;
         const timeout = window.setTimeout(() => {
             notice = new Notice(
-                "This takes longer: Getting status",
+                "获取状态耗时较长",
                 this.noticeLength
             );
         }, 20000);
@@ -462,7 +462,7 @@ export class IsomorphicGit extends GitManager {
     }
 
     async pull(): Promise<FileStatusResult[]> {
-        const progressNotice = this.showNotice("Initializing pull");
+        const progressNotice = this.showNotice("正在初始化拉取");
         try {
             this.plugin.setPluginState({ gitAction: CurrentGitAction.pull });
 
@@ -534,7 +534,7 @@ export class IsomorphicGit extends GitManager {
                 upstreamCommit
             );
 
-            this.showNotice("Finished pull", false);
+            this.showNotice("拉取完成", false);
 
             return changedFiles.map<FileStatusResult>((file) => ({
                 path: file.path,
@@ -561,7 +561,7 @@ export class IsomorphicGit extends GitManager {
         if (!(await this.canPush())) {
             return 0;
         }
-        const progressNotice = this.showNotice("Initializing push");
+        const progressNotice = this.showNotice("正在初始化推送");
         try {
             this.plugin.setPluginState({ gitAction: CurrentGitAction.status });
             const status = await this.branchInfo();
@@ -723,7 +723,7 @@ export class IsomorphicGit extends GitManager {
     }
 
     async clone(url: string, dir: string, depth?: number): Promise<void> {
-        const progressNotice = this.showNotice("Initializing clone");
+        const progressNotice = this.showNotice("正在初始化克隆");
         try {
             await this.wrapFS(
                 git.clone({
@@ -780,7 +780,7 @@ export class IsomorphicGit extends GitManager {
     }
 
     async fetch(remote?: string): Promise<void> {
-        const progressNotice = this.showNotice("Initializing fetch");
+        const progressNotice = this.showNotice("正在初始化获取");
 
         try {
             const args = {
@@ -1254,7 +1254,7 @@ export class IsomorphicGit extends GitManager {
         const email = await this.getConfig("user.email");
         if (!name || !email) {
             throw Error(
-                "Git author name and email are not set. Please set both fields in the settings."
+                "Git 作者名称和邮箱未设置。请在设置中设置这两个字段。"
             );
         }
     }

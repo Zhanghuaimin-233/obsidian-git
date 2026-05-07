@@ -374,7 +374,7 @@ export default class ObsidianGit extends Plugin {
 
         if (source == "file-explorer-context-menu") {
             menu.addItem((item) => {
-                item.setTitle(`Git: Stage`)
+                item.setTitle(`Git: 暂存`)
                     .setIcon("plus-circle")
                     .setSection("action")
                     .onClick((_) => {
@@ -396,7 +396,7 @@ export default class ObsidianGit extends Plugin {
                     });
             });
             menu.addItem((item) => {
-                item.setTitle(`Git: Unstage`)
+                item.setTitle(`Git: 取消暂存`)
                     .setIcon("minus-circle")
                     .setSection("action")
                     .onClick((_) => {
@@ -419,7 +419,7 @@ export default class ObsidianGit extends Plugin {
                     });
             });
             menu.addItem((item) => {
-                item.setTitle(`Git: Add to .gitignore`)
+                item.setTitle(`Git: 添加到 .gitignore`)
                     .setIcon("file-x")
                     .setSection("action")
                     .onClick((_) => {
@@ -433,7 +433,7 @@ export default class ObsidianGit extends Plugin {
 
         if (source == "git-source-control") {
             menu.addItem((item) => {
-                item.setTitle(`Git: Add to .gitignore`)
+                item.setTitle(`Git: 添加到 .gitignore`)
                     .setIcon("file-x")
                     .setSection("action")
                     .onClick((_) => {
