@@ -153,7 +153,7 @@ export default class Tools {
         if (command === undefined) return;
 
         this.plugin.promiseQueue.addTask(async () => {
-            const notice = new Notice(`Running '${command}'...`, 999_999);
+            const notice = new Notice(`正在运行 '${command}'...`, 999_999);
 
             try {
                 const res = await gitManager.rawCommand(command);

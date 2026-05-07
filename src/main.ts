@@ -562,12 +562,12 @@ export default class ObsidianGit extends Plugin {
             switch (result) {
                 case "missing-git":
                     this.displayError(
-                        `Cannot run git command. Trying to run: '${this.localStorage.getGitPath() || "git"}' .`
+                        `无法运行 git 命令。尝试运行：'${this.localStorage.getGitPath() || "git"}' 。`
                     );
                     break;
                 case "missing-repo":
                     new Notice(
-                        "Can't find a valid git repository. Please create one via the given command or clone an existing repo.",
+                        "找不到有效的 git 仓库。请通过给定命令创建或克隆现有仓库。",
                         10000
                     );
                     break;
@@ -618,7 +618,7 @@ export default class ObsidianGit extends Plugin {
                     }
 
                     if (pausedAutomatics) {
-                        new Notice("Automatic routines are currently paused.");
+                        new Notice("自动任务当前已暂停。");
                     }
 
                     break;
@@ -638,7 +638,7 @@ export default class ObsidianGit extends Plugin {
     async createNewRepo() {
         try {
             await this.gitManager.init();
-            new Notice("Initialized new repo");
+            new Notice("已初始化新仓库");
             await this.init({ fromReload: true });
         } catch (e) {
             this.displayError(e);
@@ -647,18 +647,18 @@ export default class ObsidianGit extends Plugin {
 
     async cloneNewRepo() {
         const modal = new GeneralModal(this, {
-            placeholder: "Enter remote URL",
+            placeholder: "输入远程 URL",
         });
         const url = await modal.openAndGetResult();
         if (url) {
-            const confirmOption = "Vault Root";
+            const confirmOption = "保险库根目录";
             let dir = await new GeneralModal(this, {
                 options:
                     this.gitManager instanceof IsomorphicGit
                         ? [confirmOption]
                         : [],
                 placeholder:
-                    "Enter directory for clone. It needs to be empty or not existent.",
+                    "输入克隆目录。目录需要为空或不存在。",
                 allowEmpty: this.gitManager instanceof IsomorphicGit,
             }).openAndGetResult();
             if (dir == undefined) return;
@@ -673,20 +673,20 @@ export default class ObsidianGit extends Plugin {
 
             if (dir === ".") {
                 const modal = new GeneralModal(this, {
-                    options: ["NO", "YES"],
-                    placeholder: `Does your remote repo contain a ${this.app.vault.configDir} directory at the root?`,
+                    options: ["否", "是"],
+                    placeholder: `您的远程仓库是否在根目录包含 ${this.app.vault.configDir} 目录？`,
                     onlySelection: true,
                 });
                 const containsConflictDir = await modal.openAndGetResult();
                 if (containsConflictDir === undefined) {
-                    new Notice("Aborted clone");
+                    new Notice("已中止克隆");
                     return;
-                } else if (containsConflictDir === "YES") {
+                } else if (containsConflictDir === "是") {
                     const confirmOption =
-                        "DELETE ALL YOUR LOCAL CONFIG AND PLUGINS";
+                        "删除所有本地配置和插件";
                     const modal = new GeneralModal(this, {
-                        options: ["Abort clone", confirmOption],
-                        placeholder: `To avoid conflicts, the local ${this.app.vault.configDir} directory needs to be deleted.`,
+                        options: ["中止克隆", confirmOption],
+                        placeholder: `为避免冲突，本地 ${this.app.vault.configDir} 目录需要被删除。`,
                         onlySelection: true,
                     });
                     const shouldDelete =
@@ -697,30 +697,30 @@ export default class ObsidianGit extends Plugin {
                             true
                         );
                     } else {
-                        new Notice("Aborted clone");
+                        new Notice("已中止克隆");
                         return;
                     }
                 }
             }
             const depth = await new GeneralModal(this, {
                 placeholder:
-                    "Specify depth of clone. Leave empty for full clone.",
+                    "指定克隆深度。留空表示完整克隆。",
                 allowEmpty: true,
             }).openAndGetResult();
             let depthInt = undefined;
             if (depth === undefined) {
-                new Notice("Aborted clone");
+                new Notice("已中止克隆");
                 return;
             }
 
             if (depth !== "") {
                 depthInt = parseInt(depth);
                 if (isNaN(depthInt)) {
-                    new Notice("Invalid depth. Aborting clone.");
+                    new Notice("无效深度。正在中止克隆。");
                     return;
                 }
             }
-            new Notice(`Cloning new repo into "${dir}"`);
+            new Notice(`正在克隆新仓库到 "${dir}"`);
             const oldBase = this.settings.basePath;
             const customDir = dir && dir !== ".";
             //Set new base path before clone to ensure proper .git/index file location in isomorphic-git
@@ -733,8 +733,8 @@ export default class ObsidianGit extends Plugin {
                     dir,
                     depthInt
                 );
-                new Notice("Cloned new repo.");
-                new Notice("Please restart Obsidian");
+                new Notice("已克隆新仓库。");
+                new Notice("请重启 Obsidian");
 
                 if (customDir) {
                     await this.saveSettings();
@@ -767,16 +767,14 @@ export default class ObsidianGit extends Plugin {
             return;
         }
         if (!filesUpdated) {
-            this.displayMessage("Pull: Everything is up-to-date");
+            this.displayMessage("拉取：所有内容已是最新");
         }
 
         if (this.gitManager instanceof SimpleGit) {
             const status = await this.updateCachedStatus();
             if (status.conflicted.length > 0) {
                 this.displayError(
-                    `You have conflicts in ${status.conflicted.length} ${
-                        status.conflicted.length == 1 ? "file" : "files"
-                    }`
+                    `存在 ${status.conflicted.length} 个文件冲突`
                 );
                 await this.handleConflict(status.conflicted);
             }
@@ -831,7 +829,7 @@ export default class ObsidianGit extends Plugin {
             ) {
                 await this.push();
             } else {
-                this.displayMessage("No commits to push");
+                this.displayMessage("没有要推送的提交");
             }
         }
         this.setPluginState({ gitAction: CurrentGitAction.idle });
@@ -871,11 +869,7 @@ export default class ObsidianGit extends Plugin {
                 // check for conflict files on auto backup
                 if (fromAuto && status.conflicted.length > 0) {
                     this.displayError(
-                        `Did not commit, because you have conflicts in ${
-                            status.conflicted.length
-                        } ${
-                            status.conflicted.length == 1 ? "file" : "files"
-                        }. Please resolve them and commit per command.`
+                        `未提交，因为存在 ${status.conflicted.length} 个文件冲突。请解决冲突后使用命令提交。`
                     );
                     await this.handleConflict(status.conflicted);
                     return false;
@@ -895,7 +889,7 @@ export default class ObsidianGit extends Plugin {
                     //
                     // Conflicts should only be resolved by manually committing.
                     this.displayError(
-                        `Did not commit, because you have conflicts. Please resolve them and commit per command.`
+                        `未提交，因为存在冲突。请解决冲突后使用命令提交。`
                     );
                     return false;
                 } else {
@@ -945,7 +939,7 @@ export default class ObsidianGit extends Plugin {
                 ) {
                     if (!this.settings.disablePopups && fromAuto) {
                         new Notice(
-                            "Auto backup: Please enter a custom commit message. Leave empty to abort"
+                            "自动备份：请输入自定义提交消息。留空将中止"
                         );
                     }
                     const modalMessage = await new CustomMessageModal(
@@ -998,7 +992,7 @@ export default class ObsidianGit extends Plugin {
 
                         if (!shExists) {
                             this.displayError(
-                                `Cannot find sh.exe at ${shPath}. Please make sure Git is properly installed.`
+                                `无法在 ${shPath} 找到 sh.exe。请确保 Git 已正确安装。`
                             );
                             return false;
                         }
@@ -1013,7 +1007,7 @@ export default class ObsidianGit extends Plugin {
                         this.displayError(res.stderr);
                     } else if (res.stdout.trim().length == 0) {
                         this.displayMessage(
-                            "Stdout from commit message script is empty. Using default message."
+                            "提交消息脚本的输出为空。使用默认消息。"
                         );
                     } else {
                         cmtMessage = res.stdout;
@@ -1022,7 +1016,7 @@ export default class ObsidianGit extends Plugin {
 
                 // Check if commit message is empty after all processing
                 if (!cmtMessage || cmtMessage.trim() === "") {
-                    new Notice("Commit aborted: No commit message provided");
+                    new Notice("提交已中止：未提供提交消息");
                     this.setPluginState({
                         gitAction: CurrentGitAction.idle,
                     });
@@ -1056,12 +1050,10 @@ export default class ObsidianGit extends Plugin {
                         unstagedFiles.length + stagedFiles.length || 0;
                 }
                 this.displayMessage(
-                    `Committed${roughly ? " approx." : ""} ${committedFiles} ${
-                        committedFiles == 1 ? "file" : "files"
-                    }`
+                    `已提交${roughly ? " 约" : ""} ${committedFiles} 个文件`
                 );
             } else {
-                this.displayMessage("No changes to commit");
+                this.displayMessage("没有要提交的更改");
             }
             this.app.workspace.trigger("obsidian-git:refresh");
 
@@ -1092,9 +1084,7 @@ export default class ObsidianGit extends Plugin {
                 (status = await this.updateCachedStatus()).conflicted.length > 0
             ) {
                 this.displayError(
-                    `Cannot push. You have conflicts in ${
-                        status.conflicted.length
-                    } ${status.conflicted.length == 1 ? "file" : "files"}`
+                    `无法推送。存在 ${status.conflicted.length} 个文件冲突`
                 );
                 await this.handleConflict(status.conflicted);
                 return false;
@@ -1102,23 +1092,21 @@ export default class ObsidianGit extends Plugin {
                 this.gitManager instanceof IsomorphicGit &&
                 hadConflict
             ) {
-                this.displayError(`Cannot push. You have conflicts`);
+                this.displayError(`无法推送。存在冲突`);
                 return false;
             }
             this.log("Pushing....");
             const pushedFiles = await this.gitManager.push();
 
-            if (pushedFiles !== undefined) {
+                if (pushedFiles !== undefined) {
                 if (pushedFiles === null) {
-                    this.displayMessage(`Pushed to remote`);
+                    this.displayMessage(`已推送到远程`);
                 } else if (pushedFiles > 0) {
                     this.displayMessage(
-                        `Pushed ${pushedFiles} ${
-                            pushedFiles == 1 ? "file" : "files"
-                        } to remote`
+                        `已推送 ${pushedFiles} 个文件到远程`
                     );
                 } else {
-                    this.displayMessage(`No commits to push`);
+                    this.displayMessage(`没有要推送的提交`);
                 }
             }
             this.setPluginState({ offlineMode: false });
@@ -1150,9 +1138,7 @@ export default class ObsidianGit extends Plugin {
 
             if (pulledFiles.length > 0) {
                 this.displayMessage(
-                    `Pulled ${pulledFiles.length} ${
-                        pulledFiles.length == 1 ? "file" : "files"
-                    } from remote`
+                    `从远程拉取了 ${pulledFiles.length} 个文件`
                 );
                 this.lastPulledFiles = pulledFiles;
             }
@@ -1171,7 +1157,7 @@ export default class ObsidianGit extends Plugin {
         try {
             await this.gitManager.fetch();
 
-            this.displayMessage(`Fetched from remote`);
+            this.displayMessage(`已从远程获取`);
             this.setPluginState({ offlineMode: false });
             this.app.workspace.trigger("obsidian-git:refresh");
         } catch (error) {
@@ -1227,7 +1213,7 @@ export default class ObsidianGit extends Plugin {
 
         if (selectedBranch != undefined) {
             await this.gitManager.checkout(selectedBranch);
-            this.displayMessage(`Switched to ${selectedBranch}`);
+            this.displayMessage(`已切换到 ${selectedBranch}`);
             this.app.workspace.trigger("obsidian-git:refresh");
             await this.branchBar?.display();
             return selectedBranch;
@@ -1243,7 +1229,7 @@ export default class ObsidianGit extends Plugin {
 
         if (branch != undefined && remote != undefined) {
             await this.gitManager.checkout(branch, remote);
-            this.displayMessage(`Switched to ${selectedBranch}`);
+            this.displayMessage(`已切换到 ${selectedBranch}`);
             await this.branchBar?.display();
             return selectedBranch;
         }
@@ -1253,11 +1239,11 @@ export default class ObsidianGit extends Plugin {
         if (!(await this.isAllInitialized())) return;
 
         const newBranch = await new GeneralModal(this, {
-            placeholder: "Create new branch",
+            placeholder: "创建新分支",
         }).openAndGetResult();
         if (newBranch != undefined) {
             await this.gitManager.createBranch(newBranch);
-            this.displayMessage(`Created new branch ${newBranch}`);
+            this.displayMessage(`已创建新分支 ${newBranch}`);
             await this.branchBar?.display();
             return newBranch;
         }
@@ -1270,7 +1256,7 @@ export default class ObsidianGit extends Plugin {
         if (branchInfo.current) branchInfo.branches.remove(branchInfo.current);
         const branch = await new GeneralModal(this, {
             options: branchInfo.branches,
-            placeholder: "Delete branch",
+            placeholder: "删除分支",
             onlySelection: true,
         }).openAndGetResult();
         if (branch != undefined) {
@@ -1279,18 +1265,18 @@ export default class ObsidianGit extends Plugin {
             // Using await inside IF throws exception
             if (!merged) {
                 const forceAnswer = await new GeneralModal(this, {
-                    options: ["YES", "NO"],
+                    options: ["是", "否"],
                     placeholder:
-                        "This branch isn't merged into HEAD. Force delete?",
+                        "此分支未合并到 HEAD。强制删除？",
                     onlySelection: true,
                 }).openAndGetResult();
-                if (forceAnswer !== "YES") {
+                if (forceAnswer !== "是") {
                     return;
                 }
-                force = forceAnswer === "YES";
+                force = forceAnswer === "是";
             }
             await this.gitManager.deleteBranch(branch, force);
-            this.displayMessage(`Deleted branch ${branch}`);
+            this.displayMessage(`已删除分支 ${branch}`);
             await this.branchBar?.display();
             return branch;
         }
@@ -1315,7 +1301,7 @@ export default class ObsidianGit extends Plugin {
             return true;
         }
         if (!(await this.gitManager.branchInfo()).tracking) {
-            new Notice("No upstream branch is set. Please select one.");
+            new Notice("未设置上游分支。请选择一个。");
             return await this.setUpstreamBranch();
         }
         return true;
@@ -1325,12 +1311,12 @@ export default class ObsidianGit extends Plugin {
         const remoteBranch = await this.selectRemoteBranch();
 
         if (remoteBranch == undefined) {
-            this.displayError("Aborted. No upstream-branch is set!", 10000);
+            this.displayError("已中止。未设置上游分支！", 10000);
             this.setPluginState({ gitAction: CurrentGitAction.idle });
             return false;
         } else {
             await this.gitManager.updateUpstreamBranch(remoteBranch);
-            this.displayMessage(`Set upstream branch to ${remoteBranch}`);
+            this.displayMessage(`已设置上游分支为 ${remoteBranch}`);
             this.setPluginState({ gitAction: CurrentGitAction.idle });
             return true;
         }
@@ -1409,10 +1395,10 @@ export default class ObsidianGit extends Plugin {
         let lines: string[] | undefined;
         if (conflicted !== undefined) {
             lines = [
-                "# Conflicts",
-                "Please resolve them and commit them using the commands `Git: Commit all changes` followed by `Git: Push`",
-                "(This file will automatically be deleted before commit)",
-                "[[#Additional Instructions]] available below file list",
+                "# 冲突",
+                "请解决冲突并使用命令 `Git: 提交所有更改` 然后 `Git: 推送` 提交",
+                "（此文件将在提交前自动删除）",
+                "[[#附加说明]] 可在文件列表下方查看",
                 "",
                 ...conflicted.map((e) => {
                     const file = this.app.vault.getAbstractFileByPath(e);
@@ -1423,18 +1409,18 @@ export default class ObsidianGit extends Plugin {
                         );
                         return `- [[${link}]]`;
                     } else {
-                        return `- Not a file: ${e}`;
+                        return `- 不是文件：${e}`;
                     }
                 }),
                 `
-# Additional Instructions
-I strongly recommend to use "Source mode" for viewing the conflicted files. For simple conflicts, in each file listed above replace every occurrence of the following text blocks with the desired text.
+# 附加说明
+我强烈建议使用"源代码模式"查看冲突文件。对于简单的冲突，在上面列出的每个文件中，将以下文本块替换为所需的文本。
 
 \`\`\`diff
 <<<<<<< HEAD
-    File changes in local repository
+    本地仓库中的文件更改
 =======
-    File changes in remote repository
+    远程仓库中的文件更改
 >>>>>>> origin/main
 \`\`\``,
             ];
@@ -1450,7 +1436,7 @@ I strongly recommend to use "Source mode" for viewing the conflicted files. For 
         const nameModal = new GeneralModal(this, {
             options: remotes,
             placeholder:
-                "Select or create a new remote by typing its name and selecting it",
+                "通过输入名称并选择来选择或创建新的远程仓库",
         });
         const remoteName = await nameModal.openAndGetResult();
 
@@ -1459,7 +1445,7 @@ I strongly recommend to use "Source mode" for viewing the conflicted files. For 
 
             const urlModal = new GeneralModal(this, {
                 initialValue: oldUrl,
-                placeholder: "Enter remote URL",
+                placeholder: "输入远程 URL",
             });
             // urlModal.inputEl.setText(oldUrl ?? "");
             const remoteURL = await urlModal.openAndGetResult();
@@ -1486,20 +1472,20 @@ I strongly recommend to use "Source mode" for viewing the conflicted files. For 
         const nameModal = new GeneralModal(this, {
             options: remotes,
             placeholder:
-                "Select or create a new remote by typing its name and selecting it",
+                "通过输入名称并选择来选择或创建新的远程仓库",
         });
         const remoteName =
             selectedRemote ?? (await nameModal.openAndGetResult());
 
         if (remoteName) {
-            this.displayMessage("Fetching remote branches");
+            this.displayMessage("正在获取远程分支");
             await this.gitManager.fetch(remoteName);
             const branches =
                 await this.gitManager.getRemoteBranches(remoteName);
             const branchModal = new GeneralModal(this, {
                 options: branches,
                 placeholder:
-                    "Select or create a new remote branch by typing its name and selecting it",
+                    "通过输入名称并选择来选择或创建新的远程分支",
             });
             const branch = await branchModal.openAndGetResult();
             if (branch == undefined) return;
@@ -1518,7 +1504,7 @@ I strongly recommend to use "Source mode" for viewing the conflicted files. For 
 
         const nameModal = new GeneralModal(this, {
             options: remotes,
-            placeholder: "Select a remote",
+            placeholder: "选择远程仓库",
         });
         const remoteName = await nameModal.openAndGetResult();
 
@@ -1581,11 +1567,11 @@ I strongly recommend to use "Source mode" for viewing the conflicted files. For 
     handleNoNetworkError(_: NoNetworkError): void {
         if (!this.state.offlineMode) {
             this.displayError(
-                "Git: Going into offline mode. Future network errors will no longer be displayed.",
+                "Git：进入离线模式。未来的网络错误将不再显示。",
                 2000
             );
         } else {
-            this.log("Encountered network error, but already in offline mode");
+            this.log("遇到网络错误，但已处于离线模式");
         }
         this.setPluginState({
             gitAction: CurrentGitAction.idle,
@@ -1600,7 +1586,7 @@ I strongly recommend to use "Source mode" for viewing the conflicted files. For 
         if (!this.settings.disablePopups) {
             if (
                 !this.settings.disablePopupsForNoChanges ||
-                !message.startsWith("No changes")
+                !message.startsWith("没有更改")
             ) {
                 new Notice(message, 5 * 1000);
             }
@@ -1611,7 +1597,7 @@ I strongly recommend to use "Source mode" for viewing the conflicted files. For 
 
     displayError(data: unknown, timeout: number = 10 * 1000): void {
         if (data instanceof Errors.UserCanceledError) {
-            new Notice("Aborted");
+            new Notice("已中止");
             return;
         }
         let error: Error;

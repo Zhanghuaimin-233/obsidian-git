@@ -227,7 +227,7 @@
                 id="backup-btn"
                 data-icon="arrow-up-circle"
                 class="clickable-icon nav-action-button"
-                aria-label="Commit-and-sync"
+                aria-label="提交并同步"
                 bind:this={buttons[0]}
                 onclick={commitAndSync}
             ></div>
@@ -235,7 +235,7 @@
                 id="commit-btn"
                 data-icon="check"
                 class="clickable-icon nav-action-button"
-                aria-label="Commit"
+                aria-label="提交"
                 bind:this={buttons[1]}
                 onclick={commit}
             ></div>
@@ -243,7 +243,7 @@
                 id="stage-all"
                 class="clickable-icon nav-action-button"
                 data-icon="plus-circle"
-                aria-label="Stage all"
+                aria-label="暂存所有"
                 bind:this={buttons[2]}
                 onclick={stageAll}
             ></div>
@@ -251,7 +251,7 @@
                 id="unstage-all"
                 class="clickable-icon nav-action-button"
                 data-icon="minus-circle"
-                aria-label="Unstage all"
+                aria-label="取消暂存所有"
                 bind:this={buttons[3]}
                 onclick={unstageAll}
             ></div>
@@ -259,7 +259,7 @@
                 id="push"
                 class="clickable-icon nav-action-button"
                 data-icon="upload"
-                aria-label="Push"
+                aria-label="推送"
                 bind:this={buttons[4]}
                 onclick={push}
             ></div>
@@ -267,14 +267,14 @@
                 id="pull"
                 class="clickable-icon nav-action-button"
                 data-icon="download"
-                aria-label="Pull"
+                aria-label="拉取"
                 bind:this={buttons[5]}
                 onclick={pull}
             ></div>
             <div
                 id="layoutChange"
                 class="clickable-icon nav-action-button"
-                aria-label="Change Layout"
+                aria-label="更改布局"
                 data-icon={showTree ? "list" : "folder"}
                 bind:this={buttons[6]}
                 onclick={() => {
@@ -289,7 +289,7 @@
                 class="clickable-icon nav-action-button"
                 class:loading
                 data-icon="refresh-cw"
-                aria-label="Refresh"
+                aria-label="刷新"
                 bind:this={buttons[7]}
                 onclick={triggerRefresh}
             ></div>
@@ -300,14 +300,14 @@
             {rows}
             class="commit-msg-input"
             spellcheck="true"
-            placeholder="Commit Message"
+            placeholder="提交消息"
             bind:value={commitMessage}
         ></textarea>
         {#if commitMessage}
             <div
                 class="git-commit-msg-clear-button"
                 onclick={() => (commitMessage = "")}
-                aria-label={"Clear"}
+                aria-label={"清除"}
             ></div>
         {/if}
     </div>
@@ -342,14 +342,14 @@
                             >
                         </div>
                         <div class="tree-item-inner nav-folder-title-content">
-                            Staged Changes
+                            已暂存的更改
                         </div>
 
                         <div class="git-tools">
                             <div class="buttons">
                                 <div
                                     data-icon="minus"
-                                    aria-label="Unstage"
+                                    aria-label="取消暂存"
                                     bind:this={buttons[8]}
                                     onclick={unstageAll}
                                     class="clickable-icon"
@@ -433,13 +433,13 @@
                         </div>
 
                         <div class="tree-item-inner nav-folder-title-content">
-                            Changes
+                            更改
                         </div>
                         <div class="git-tools">
                             <div class="buttons">
                                 <div
                                     data-icon="undo"
-                                    aria-label="Discard"
+                                    aria-label="丢弃"
                                     onclick={discard}
                                     class="clickable-icon"
                                 >
@@ -461,7 +461,7 @@
                                 </div>
                                 <div
                                     data-icon="plus"
-                                    aria-label="Stage"
+                                    aria-label="暂存"
                                     bind:this={buttons[9]}
                                     onclick={stageAll}
                                     class="clickable-icon"
@@ -554,7 +554,7 @@
                             <div
                                 class="tree-item-inner nav-folder-title-content"
                             >
-                                Recently Pulled Files
+                                最近拉取的文件
                             </div>
 
                             <span class="tree-item-flair"

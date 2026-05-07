@@ -67,18 +67,18 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
         containerEl.empty();
         if (!gitReady) {
             containerEl.createEl("p", {
-                text: "Git is not ready. When all settings are correct you can configure commit-sync, etc.",
+                text: "Git 未就绪。当所有设置正确时，您可以配置提交同步等。",
             });
             containerEl.createEl("br");
         }
 
         let setting: Setting;
         if (gitReady) {
-            new Setting(containerEl).setName("Automatic").setHeading();
+            new Setting(containerEl).setName("自动").setHeading();
             new Setting(containerEl)
-                .setName("Split timers for automatic commit and sync")
+                .setName("分离自动提交和同步的计时器")
                 .setDesc(
-                    "Enable to use one interval for commit and another for sync."
+                    "启用以使用一个间隔进行提交，另一个间隔进行同步。"
                 )
                 .addToggle((toggle) =>
                     toggle
@@ -95,13 +95,13 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 );
 
             new Setting(containerEl)
-                .setName(`Auto ${commitOrSync} interval (minutes)`)
+                .setName(`自动 ${commitOrSync} 间隔（分钟）`)
                 .setDesc(
                     `${
                         plugin.settings.differentIntervalCommitAndPush
-                            ? "Commit"
-                            : "Commit and sync"
-                    } changes every X minutes. Set to 0 (default) to disable. (See below setting for further configuration!)`
+                            ? "提交"
+                            : "提交并同步"
+                    } 每 X 分钟更改一次。设置为 0（默认）以禁用。（参见下方设置以获取更多配置！）`
                 )
                 .addText((text) => {
                     text.inputEl.type = "number";
@@ -125,13 +125,13 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 });
 
             setting = new Setting(containerEl)
-                .setName(`Auto ${commitOrSync} after stopping file edits`)
+                .setName(`停止文件编辑后自动 ${commitOrSync}`)
                 .setDesc(
-                    `Requires the ${commitOrSync} interval not to be 0.
-                        If turned on, do auto ${commitOrSync} every ${formatMinutes(
+                    `需要 ${commitOrSync} 间隔不为 0。
+                        如果开启，每 ${formatMinutes(
                             plugin.settings.autoSaveInterval
-                        )} after stopping file edits.
-                        This also prevents auto ${commitOrSync} while editing a file. If turned off, it's independent from the last file edit.`
+                        )} 后自动 ${commitOrSync}。
+                        这也会在编辑文件时防止自动 ${commitOrSync}。如果关闭，则与上次文件编辑无关。`
                 )
                 .addToggle((toggle) =>
                     toggle
@@ -150,9 +150,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
             );
 
             setting = new Setting(containerEl)
-                .setName(`Auto ${commitOrSync} after latest commit`)
+                .setName(`最新提交后自动 ${commitOrSync}`)
                 .setDesc(
-                    `If turned on, sets last auto ${commitOrSync} timestamp to the latest commit timestamp. This reduces the frequency of auto ${commitOrSync} when doing manual commits.`
+                    `如果开启，将上次自动 ${commitOrSync} 时间戳设置为最新提交时间戳。这会减少手动提交时自动 ${commitOrSync} 的频率。`
                 )
                 .addToggle((toggle) =>
                     toggle
@@ -170,9 +170,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
             );
 
             setting = new Setting(containerEl)
-                .setName(`Auto push interval (minutes)`)
+                .setName(`自动推送间隔（分钟）`)
                 .setDesc(
-                    "Push commits every X minutes. Set to 0 (default) to disable."
+                    "每 X 分钟推送一次提交。设置为 0（默认）以禁用。"
                 )
                 .addText((text) => {
                     text.inputEl.type = "number";
@@ -200,9 +200,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
             );
 
             new Setting(containerEl)
-                .setName("Auto pull interval (minutes)")
+                .setName("自动拉取间隔（分钟）")
                 .setDesc(
-                    "Pull changes every X minutes. Set to 0 (default) to disable."
+                    "每 X 分钟拉取一次更改。设置为 0（默认）以禁用。"
                 )
                 .addText((text) => {
                     text.inputEl.type = "number";
@@ -226,9 +226,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 });
 
             new Setting(containerEl)
-                .setName(`Auto ${commitOrSync} only staged files`)
+                .setName(`仅自动 ${commitOrSync} 暂存的文件`)
                 .setDesc(
-                    `If turned on, only staged files are committed on ${commitOrSync}. If turned off, all changed files are committed.`
+                    `如果开启，仅在 ${commitOrSync} 时提交暂存的文件。如果关闭，所有更改的文件都会被提交。`
                 )
                 .addToggle((toggle) =>
                     toggle
@@ -241,9 +241,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
 
             new Setting(containerEl)
                 .setName(
-                    `Specify custom commit message on auto ${commitOrSync}`
+                    `在自动 ${commitOrSync} 时指定自定义提交消息`
                 )
-                .setDesc("You will get a pop up to specify your message.")
+                .setDesc("您将收到一个弹窗来指定您的消息。")
                 .addToggle((toggle) =>
                     toggle
                         .setValue(plugin.settings.customMessageOnAutoBackup)
@@ -255,10 +255,10 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 );
 
             setting = new Setting(containerEl)
-                .setName(`Commit message on auto ${commitOrSync}`)
+                .setName(`自动 ${commitOrSync} 的提交消息`)
                 .setDesc(
-                    "Available placeholders: {{date}}" +
-                        " (see below), {{hostname}} (see below), {{numFiles}} (number of changed files in the commit) and {{files}} (changed files in commit message)."
+                    "可用占位符：{{date}}" +
+                        "（见下文），{{hostname}}（见下文），{{numFiles}}（提交中更改的文件数）和 {{files}}（提交消息中更改的文件）。"
                 )
                 .addTextArea((text) => {
                     text.setPlaceholder(
@@ -282,20 +282,20 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 plugin.settings.customMessageOnAutoBackup
             );
 
-            new Setting(containerEl).setName("Commit message").setHeading();
+            new Setting(containerEl).setName("提交消息").setHeading();
 
             const manualCommitMessageSetting = new Setting(containerEl)
-                .setName("Commit message on manual commit")
+                .setName("手动提交的提交消息")
                 .setDesc(
-                    "Available placeholders: {{date}}" +
-                        " (see below), {{hostname}} (see below), {{numFiles}} (number of changed files in the commit) and {{files}} (changed files in commit message). Leave empty to require manual input on each commit."
+                    "可用占位符：{{date}}" +
+                        "（见下文），{{hostname}}（见下文），{{numFiles}}（提交中更改的文件数）和 {{files}}（提交消息中更改的文件）。留空以要求每次提交时手动输入。"
                 );
             manualCommitMessageSetting.addTextArea((text) => {
                 manualCommitMessageSetting.addButton((button) => {
                     button
                         .setIcon("reset")
                         .setTooltip(
-                            `Set to default: "${DEFAULT_SETTINGS.commitMessage}"`
+                            `设置为默认："${DEFAULT_SETTINGS.commitMessage}"`
                         )
                         .onClick(() => {
                             text.setValue(DEFAULT_SETTINGS.commitMessage);
@@ -311,9 +311,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
 
             if (Platform.isDesktopApp)
                 new Setting(containerEl)
-                    .setName("Commit message script")
+                    .setName("提交消息脚本")
                     .setDesc(
-                        "A script that is run using 'sh -c' to generate the commit message. May be used to generate commit messages using AI tools. Available placeholders: {{hostname}}, {{date}}."
+                        "使用 'sh -c' 运行的脚本，用于生成提交消息。可用于使用 AI 工具生成提交消息。可用占位符：{{hostname}}，{{date}}。"
                     )
                     .addText((text) => {
                         text.onChange(async (value) => {
@@ -332,7 +332,7 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                     });
 
             const datePlaceholderSetting = new Setting(containerEl)
-                .setName("{{date}} placeholder format")
+                .setName("{{date}} 占位符格式")
                 .addMomentFormat((text) =>
                     text
                         .setDefaultFormat(plugin.settings.commitDateFormat)
@@ -343,12 +343,12 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                         })
                 );
             datePlaceholderSetting.descEl.innerHTML = `
-            Specify custom date format. E.g. "${DATE_TIME_FORMAT_SECONDS}. See <a href="https://momentjs.com">Moment.js</a> for more formats.`;
+            指定自定义日期格式。例如 "${DATE_TIME_FORMAT_SECONDS}。查看 <a href="https://momentjs.com">Moment.js</a> 以获取更多格式。`;
 
             new Setting(containerEl)
-                .setName("{{hostname}} placeholder replacement")
+                .setName("{{hostname}} 占位符替换")
                 .setDesc(
-                    "Specify custom hostname for every device. Defaults to the OS hostname if not set on desktop."
+                    "为每台设备指定自定义主机名。如果未在桌面上设置，则默认为操作系统主机名。"
                 )
                 .addText((text) =>
                     text
@@ -359,9 +359,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 );
 
             new Setting(containerEl)
-                .setName("Preview commit message")
+                .setName("预览提交消息")
                 .addButton((button) =>
-                    button.setButtonText("Preview").onClick(async () => {
+                    button.setButtonText("预览").onClick(async () => {
                         const commitMessagePreview =
                             await plugin.gitManager.formatCommitMessage(
                                 plugin.settings.commitMessage
@@ -371,7 +371,7 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 );
 
             new Setting(containerEl)
-                .setName("List filenames affected by commit in the commit body")
+                .setName("在提交正文中列出受提交影响的文件名")
                 .addToggle((toggle) =>
                     toggle
                         .setValue(plugin.settings.listChangedFilesInMessageBody)
@@ -382,19 +382,19 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                         })
                 );
 
-            new Setting(containerEl).setName("Pull").setHeading();
+            new Setting(containerEl).setName("拉取").setHeading();
 
             if (plugin.gitManager instanceof SimpleGit)
                 new Setting(containerEl)
-                    .setName("Merge strategy")
+                    .setName("合并策略")
                     .setDesc(
-                        "Decide how to integrate commits from your remote branch into your local branch."
+                        "决定如何将远程分支的提交集成到本地分支。"
                     )
                     .addDropdown((dropdown) => {
                         const options: Record<SyncMethod, string> = {
-                            merge: "Merge",
-                            rebase: "Rebase",
-                            reset: "Other sync service (Only updates the HEAD without touching the working directory)",
+                            merge: "合并",
+                            rebase: "变基",
+                            reset: "其他同步服务（仅更新 HEAD 而不接触工作目录）",
                         };
                         dropdown.addOptions(options);
                         dropdown.setValue(plugin.settings.syncMethod);
@@ -406,15 +406,15 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                     });
 
             new Setting(containerEl)
-                .setName("Merge strategy on conflicts")
+                .setName("冲突时的合并策略")
                 .setDesc(
-                    "Decide how to solve conflicts when pulling remote changes. This can be used to favor your local changes or the remote changes automatically."
+                    "决定在拉取远程更改时如何解决冲突。这可用于自动优先考虑本地更改或远程更改。"
                 )
                 .addDropdown((dropdown) => {
                     const options: Record<MergeStrategy, string> = {
-                        none: "None (git default)",
-                        ours: "Our changes",
-                        theirs: "Their changes",
+                        none: "无（git 默认）",
+                        ours: "我们的更改",
+                        theirs: "他们的更改",
                     };
                     dropdown.addOptions(options);
                     dropdown.setValue(plugin.settings.mergeStrategy);
@@ -426,8 +426,8 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 });
 
             new Setting(containerEl)
-                .setName("Pull on startup")
-                .setDesc("Automatically pull commits when Obsidian starts.")
+                .setName("启动时拉取")
+                .setDesc("Obsidian 启动时自动拉取提交。")
                 .addToggle((toggle) =>
                     toggle
                         .setValue(plugin.settings.autoPullOnBoot)
@@ -438,16 +438,16 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 );
 
             new Setting(containerEl)
-                .setName("Commit-and-sync")
+                .setName("提交并同步")
                 .setDesc(
-                    "Commit-and-sync with default settings means staging everything -> committing -> pulling -> pushing. Ideally this is a single action that you do regularly to keep your local and remote repository in sync."
+                    "使用默认设置的提交并同步意味着暂存所有内容 -> 提交 -> 拉取 -> 推送。理想情况下，这是您定期执行的单个操作，以保持本地和远程仓库同步。"
                 )
                 .setHeading();
 
             setting = new Setting(containerEl)
-                .setName("Push on commit-and-sync")
+                .setName("提交并同步时推送")
                 .setDesc(
-                    `Most of the time you want to push after committing. Turning this off turns a commit-and-sync action into commit ${plugin.settings.pullBeforePush ? "and pull " : ""}only. It will still be called commit-and-sync.`
+                    `大多数情况下，您希望在提交后推送。关闭此选项会将提交并同步操作变为仅提交 ${plugin.settings.pullBeforePush ? "并拉取 " : ""}。它仍将被称为提交并同步。`
                 )
                 .addToggle((toggle) =>
                     toggle
@@ -460,9 +460,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 );
 
             new Setting(containerEl)
-                .setName("Pull on commit-and-sync")
+                .setName("提交并同步时拉取")
                 .setDesc(
-                    `On commit-and-sync, pull commits as well. Turning this off turns a commit-and-sync action into commit ${plugin.settings.disablePush ? "" : "and push "}only.`
+                    `在提交并同步时，也拉取提交。关闭此选项会将提交并同步操作变为仅提交 ${plugin.settings.disablePush ? "" : "并推送 "}。`
                 )
                 .addToggle((toggle) =>
                     toggle
@@ -476,16 +476,16 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
 
             if (plugin.gitManager instanceof SimpleGit) {
                 new Setting(containerEl)
-                    .setName("Hunk management")
+                    .setName("代码块管理")
                     .setDesc(
-                        "Hunks are sections of grouped line changes right in your editor."
+                        "代码块是编辑器中分组行更改的部分。"
                     )
                     .setHeading();
 
                 new Setting(containerEl)
-                    .setName("Signs")
+                    .setName("标记")
                     .setDesc(
-                        "This allows you to see your changes right in your editor via colored markers and stage/reset/preview individual hunks."
+                        "这允许您通过彩色标记在编辑器中查看更改，并暂存/重置/预览单个代码块。"
                     )
                     .addToggle((toggle) =>
                         toggle
@@ -498,9 +498,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                     );
 
                 new Setting(containerEl)
-                    .setName("Hunk commands")
+                    .setName("代码块命令")
                     .setDesc(
-                        "Adds commands to stage/reset individual Git diff hunks and navigate between them via 'Go to next/prev hunk' commands."
+                        "添加命令以暂存/重置单个 Git 差异代码块，并通过“跳转到下一个/上一个代码块”命令在它们之间导航。"
                     )
                     .addToggle((toggle) =>
                         toggle
@@ -514,13 +514,13 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                     );
 
                 new Setting(containerEl)
-                    .setName("Status bar with summary of line changes")
+                    .setName("状态栏显示行更改摘要")
                     .addDropdown((toggle) =>
                         toggle
                             .addOptions({
-                                disabled: "Disabled",
-                                colored: "Colored",
-                                monochrome: "Monochrome",
+                                disabled: "禁用",
+                                colored: "彩色",
+                                monochrome: "单色",
                             })
                             .setValue(plugin.settings.hunks.statusBar)
                             .onChange(
@@ -535,23 +535,23 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                     );
 
                 new Setting(containerEl)
-                    .setName("Line author information")
+                    .setName("行作者信息")
                     .setHeading();
 
                 this.addLineAuthorInfoSettings();
             }
         }
 
-        new Setting(containerEl).setName("History view").setHeading();
+        new Setting(containerEl).setName("历史视图").setHeading();
 
         new Setting(containerEl)
-            .setName("Show Author")
-            .setDesc("Show the author of the commit in the history view.")
+            .setName("显示作者")
+            .setDesc("在历史视图中显示提交的作者。")
             .addDropdown((dropdown) => {
                 const options: Record<ShowAuthorInHistoryView, string> = {
-                    hide: "Hide",
-                    full: "Full",
-                    initials: "Initials",
+                    hide: "隐藏",
+                    full: "完整",
+                    initials: "首字母",
                 };
                 dropdown.addOptions(options);
                 dropdown.setValue(plugin.settings.authorInHistoryView);
@@ -563,9 +563,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
             });
 
         new Setting(containerEl)
-            .setName("Show Date")
+            .setName("显示日期")
             .setDesc(
-                "Show the date of the commit in the history view. The {{date}} placeholder format is used to display the date."
+                "在历史视图中显示提交的日期。使用 {{date}} 占位符格式显示日期。"
             )
             .addToggle((toggle) =>
                 toggle
@@ -577,14 +577,14 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                     })
             );
 
-        new Setting(containerEl).setName("Source control view").setHeading();
+        new Setting(containerEl).setName("源代码控制视图").setHeading();
 
         new Setting(containerEl)
             .setName(
-                "Automatically refresh source control view on file changes"
+                "文件更改时自动刷新源代码控制视图"
             )
             .setDesc(
-                "On slower machines this may cause lags. If so, just disable this option."
+                "在较慢的机器上可能会导致延迟。如果是这样，请禁用此选项。"
             )
             .addToggle((toggle) =>
                 toggle
@@ -596,9 +596,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
             );
 
         new Setting(containerEl)
-            .setName("Source control view refresh interval")
+            .setName("源代码控制视图刷新间隔")
             .setDesc(
-                "Milliseconds to wait after file change before refreshing the Source Control View."
+                "文件更改后刷新源代码控制视图前等待的毫秒数。"
             )
             .addText((text) => {
                 const MIN_SOURCE_CONTROL_REFRESH_INTERVAL = 500;
@@ -625,21 +625,21 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                     plugin.setRefreshDebouncer();
                 });
             });
-        new Setting(containerEl).setName("Miscellaneous").setHeading();
+        new Setting(containerEl).setName("其他").setHeading();
 
         if (plugin.gitManager instanceof SimpleGit) {
             new Setting(containerEl)
-                .setName("Diff view style")
+                .setName("差异视图样式")
                 .setDesc(
-                    'Set the style for the diff view. Note that the actual diff in "Split" mode is not generated by Git, but the editor itself instead so it may differ from the diff generated by Git. One advantage of this is that you can edit the text in that view.'
+                    '设置差异视图的样式。请注意，"拆分"模式下的实际差异不是由 Git 生成的，而是由编辑器本身生成的，因此可能与 Git 生成的差异不同。这样做的一个优点是您可以在该视图中编辑文本。'
                 )
                 .addDropdown((dropdown) => {
                     const options: Record<
                         ObsidianGitSettings["diffStyle"],
                         string
                     > = {
-                        split: "Split",
-                        git_unified: "Unified",
+                        split: "拆分",
+                        git_unified: "统一",
                     };
                     dropdown.addOptions(options);
                     dropdown.setValue(plugin.settings.diffStyle);
@@ -653,9 +653,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
         }
 
         new Setting(containerEl)
-            .setName("Disable informative notifications")
+            .setName("禁用信息通知")
             .setDesc(
-                "Disable informative notifications for git operations to minimize distraction (refer to status bar for updates)."
+                "禁用 git 操作的信息通知以减少干扰（有关更新，请参阅状态栏）。"
             )
             .addToggle((toggle) =>
                 toggle
@@ -668,9 +668,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
             );
 
         new Setting(containerEl)
-            .setName("Disable error notifications")
+            .setName("禁用错误通知")
             .setDesc(
-                "Disable error notifications of any kind to minimize distraction (refer to status bar for updates)."
+                "禁用任何类型的错误通知以减少干扰（有关更新，请参阅状态栏）。"
             )
             .addToggle((toggle) =>
                 toggle
@@ -683,9 +683,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
 
         if (!plugin.settings.disablePopups)
             new Setting(containerEl)
-                .setName("Hide notifications for no changes")
+                .setName("隐藏无更改通知")
                 .setDesc(
-                    "Don't show notifications when there are no changes to commit or push."
+                    "当没有要提交或推送的更改时，不显示通知。"
                 )
                 .addToggle((toggle) =>
                     toggle
@@ -697,9 +697,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 );
 
         new Setting(containerEl)
-            .setName("Show status bar")
+            .setName("显示状态栏")
             .setDesc(
-                "Obsidian must be restarted for the changes to take affect."
+                "必须重启 Obsidian 才能使更改生效。"
             )
             .addToggle((toggle) =>
                 toggle
@@ -711,9 +711,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
             );
 
         new Setting(containerEl)
-            .setName("File menu integration")
+            .setName("文件菜单集成")
             .setDesc(
-                `Add "Stage", "Unstage" and "Add to .gitignore" actions to the file menu.`
+                `在文件菜单中添加"暂存"、"取消暂存"和"添加到 .gitignore"操作。`
             )
             .addToggle((toggle) =>
                 toggle
@@ -725,9 +725,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
             );
 
         new Setting(containerEl)
-            .setName("Show branch status bar")
+            .setName("显示分支状态栏")
             .setDesc(
-                "Obsidian must be restarted for the changes to take affect."
+                "必须重启 Obsidian 才能使更改生效。"
             )
             .addToggle((toggle) =>
                 toggle
@@ -739,7 +739,7 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
             );
 
         new Setting(containerEl)
-            .setName("Show the count of modified files in the status bar")
+            .setName("在状态栏中显示修改文件的数量")
             .addToggle((toggle) =>
                 toggle
                     .setValue(plugin.settings.changedFilesInStatusBar)
@@ -751,16 +751,16 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
 
         if (plugin.gitManager instanceof IsomorphicGit) {
             new Setting(containerEl)
-                .setName("Authentication/commit author")
+                .setName("认证/提交作者")
                 .setHeading();
         } else {
-            new Setting(containerEl).setName("Commit author").setHeading();
+            new Setting(containerEl).setName("提交作者").setHeading();
         }
 
         if (plugin.gitManager instanceof IsomorphicGit)
             new Setting(containerEl)
                 .setName(
-                    "Username on your git server. E.g. your username on GitHub"
+                    "您的 git 服务器上的用户名。例如您在 GitHub 上的用户名"
                 )
                 .addText((cb) => {
                     cb.setValue(plugin.localStorage.getUsername() ?? "");
@@ -771,9 +771,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
 
         if (plugin.gitManager instanceof IsomorphicGit)
             new Setting(containerEl)
-                .setName("Password/Personal access token")
+                .setName("密码/个人访问令牌")
                 .setDesc(
-                    "Type in your password. You won't be able to see it again."
+                    "输入您的密码。您将无法再次看到它。"
                 )
                 .addText((cb) => {
                     cb.inputEl.autocapitalize = "off";
@@ -786,7 +786,7 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
 
         if (plugin.gitReady)
             new Setting(containerEl)
-                .setName("Author name for commit")
+                .setName("提交的作者姓名")
                 .addText(async (cb) => {
                     cb.setValue(
                         (await plugin.gitManager.getConfig("user.name")) ?? ""
@@ -801,7 +801,7 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
 
         if (plugin.gitReady)
             new Setting(containerEl)
-                .setName("Author email for commit")
+                .setName("提交的作者邮箱")
                 .addText(async (cb) => {
                     cb.setValue(
                         (await plugin.gitManager.getConfig("user.email")) ?? ""
@@ -815,17 +815,17 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 });
 
         new Setting(containerEl)
-            .setName("Advanced")
+            .setName("高级")
             .setDesc(
-                "These settings usually don't need to be changed, but may be required for special setups."
+                "这些设置通常不需要更改，但可能需要用于特殊设置。"
             )
             .setHeading();
 
         if (plugin.gitManager instanceof SimpleGit) {
             new Setting(containerEl)
-                .setName("Update submodules")
+                .setName("更新子模块")
                 .setDesc(
-                    '"Commit-and-sync" and "pull" takes care of submodules. Missing features: Conflicted files, count of pulled/pushed/committed files. Tracking branch needs to be set for each submodule.'
+                    '"提交并同步"和"拉取"会处理子模块。缺少的功能：冲突文件、拉取/推送/提交文件的数量。需要为每个子模块设置跟踪分支。'
                 )
                 .addToggle((toggle) =>
                     toggle
@@ -837,9 +837,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 );
             if (plugin.settings.updateSubmodules) {
                 new Setting(containerEl)
-                    .setName("Submodule recurse checkout/switch")
+                    .setName("子模块递归检出/切换")
                     .setDesc(
-                        "Whenever a checkout happens on the root repository, recurse the checkout on the submodules (if the branches exist)."
+                        "每当在根仓库上发生检出时，递归检出子模块（如果分支存在）。"
                     )
                     .addToggle((toggle) =>
                         toggle
@@ -855,9 +855,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
 
         if (plugin.gitManager instanceof SimpleGit)
             new Setting(containerEl)
-                .setName("Custom Git binary path")
+                .setName("自定义 Git 二进制路径")
                 .setDesc(
-                    "Specify the path to the Git binary/executable. Git should already be in your PATH. Should only be necessary for a custom Git installation."
+                    "指定 Git 二进制/可执行文件的路径。Git 应该已经在您的 PATH 中。仅在自定义 Git 安装时需要。"
                 )
                 .addText((cb) => {
                     cb.setValue(plugin.localStorage.getGitPath() ?? "");
@@ -872,9 +872,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
 
         if (plugin.gitManager instanceof SimpleGit)
             new Setting(containerEl)
-                .setName("Additional environment variables")
+                .setName("附加环境变量")
                 .setDesc(
-                    "Use each line for a new environment variable in the format KEY=VALUE ."
+                    "每行使用一个新环境变量，格式为 KEY=VALUE。"
                 )
                 .addTextArea((cb) => {
                     cb.setPlaceholder("GIT_DIR=/path/to/git/dir");
@@ -886,8 +886,8 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
 
         if (plugin.gitManager instanceof SimpleGit)
             new Setting(containerEl)
-                .setName("Additional PATH environment variable paths")
-                .setDesc("Use each line for one path")
+                .setName("附加 PATH 环境变量路径")
+                .setDesc("每行使用一个路径")
                 .addTextArea((cb) => {
                     cb.setValue(plugin.localStorage.getPATHPaths().join("\n"));
                     cb.onChange((value) => {
@@ -896,12 +896,12 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 });
         if (plugin.gitManager instanceof SimpleGit)
             new Setting(containerEl)
-                .setName("Reload with new environment variables")
+                .setName("使用新环境变量重新加载")
                 .setDesc(
-                    "Removing previously added environment variables will not take effect until Obsidian is restarted."
+                    "移除先前添加的环境变量在重启 Obsidian 之前不会生效。"
                 )
                 .addButton((cb) => {
-                    cb.setButtonText("Reload");
+                    cb.setButtonText("重新加载");
                     cb.setCta();
                     cb.onClick(async () => {
                         await (plugin.gitManager as SimpleGit).setGitInstance();
@@ -909,11 +909,11 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 });
 
         new Setting(containerEl)
-            .setName("Custom base path (Git repository path)")
+            .setName("自定义基础路径（Git 仓库路径）")
             .setDesc(
                 `
-            Sets the relative path to the vault from which the Git binary should be executed.
-             Mostly used to set the path to the Git repository, which is only required if the Git repository is below the vault root directory. Use "\\" instead of "/" on Windows.
+            设置从保险库执行 Git 二进制文件的相对路径。
+             主要用于设置 Git 仓库的路径，仅在 Git 仓库位于保险库根目录下方时需要。在 Windows 上使用 "\\" 代替 "/"。
             `
             )
             .addText((cb) => {
@@ -929,9 +929,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
             });
 
         new Setting(containerEl)
-            .setName("Custom Git directory path (Instead of '.git')")
+            .setName("自定义 Git 目录路径（代替 '.git'）")
             .setDesc(
-                `Corresponds to the GIT_DIR environment variable. Requires restart of Obsidian to take effect. Use "\\" instead of "/" on Windows.`
+                `对应于 GIT_DIR 环境变量。需要重启 Obsidian 才能生效。在 Windows 上使用 "\\" 代替 "/"。`
             )
             .addText((cb) => {
                 cb.setValue(plugin.settings.gitDir);
@@ -943,9 +943,9 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
             });
 
         new Setting(containerEl)
-            .setName("Disable on this device")
+            .setName("在此设备上禁用")
             .setDesc(
-                "Disables the plugin on this device. This setting is not synced."
+                "在此设备上禁用插件。此设置不会同步。"
             )
             .addToggle((toggle) =>
                 toggle
@@ -960,16 +960,16 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                                 .catch((e) => plugin.displayError(e));
                         }
                         new Notice(
-                            "Obsidian must be restarted for the changes to take affect."
+                            "必须重启 Obsidian 才能使更改生效。"
                         );
                     })
             );
 
-        new Setting(containerEl).setName("Support").setHeading();
+        new Setting(containerEl).setName("支持").setHeading();
         new Setting(containerEl)
-            .setName("Donate")
+            .setName("捐赠")
             .setDesc(
-                "If you like this Plugin, consider donating to support continued development."
+                "如果您喜欢此插件，请考虑捐赠以支持持续开发。"
             )
             .addButton((bt) => {
                 bt.buttonEl.outerHTML =
@@ -981,7 +981,7 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
         debugDiv.setAttr("style", "margin: var(--size-4-2)");
 
         const debugButton = debugDiv.createEl("button");
-        debugButton.setText("Copy Debug Information");
+        debugButton.setText("复制调试信息");
         debugButton.onclick = async () => {
             await window.navigator.clipboard.writeText(
                 JSON.stringify(
@@ -994,7 +994,7 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 )
             );
             new Notice(
-                "Debug information copied to clipboard. May contain sensitive information!"
+                "调试信息已复制到剪贴板。可能包含敏感信息！"
             );
         };
 
@@ -1002,7 +1002,7 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
             const info = containerEl.createDiv();
             info.setAttr("align", "center");
             info.setText(
-                "Debugging and logging:\nYou can always see the logs of this and every other plugin by opening the console with"
+                "调试和日志记录：\n您始终可以通过打开控制台查看此插件和其他所有插件的日志"
             );
             const keys = containerEl.createDiv();
             keys.setAttr("align", "center");
@@ -1060,20 +1060,20 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
 
     private addLineAuthorInfoSettings() {
         const baseLineAuthorInfoSetting = new Setting(this.containerEl).setName(
-            "Show commit authoring information next to each line"
+            "在每行旁边显示提交作者信息"
         );
 
         if (
             !this.plugin.editorIntegration.lineAuthoringFeature.isAvailableOnCurrentPlatform()
         ) {
             baseLineAuthorInfoSetting
-                .setDesc("Only available on desktop currently.")
+                .setDesc("目前仅在桌面上可用。")
                 .setDisabled(true);
         }
 
         baseLineAuthorInfoSetting.descEl.innerHTML = `
-            <a href="${LINE_AUTHOR_FEATURE_WIKI_LINK}">Feature guide and quick examples</a></br>
-            The commit hash, author name and authoring date can all be individually toggled.</br>Hide everything, to only show the age-colored sidebar.`;
+            <a href="${LINE_AUTHOR_FEATURE_WIKI_LINK}">功能指南和快速示例</a></br>
+            提交哈希、作者姓名和作者日期都可以单独切换。</br>隐藏所有内容，仅显示年龄着色的侧边栏。`;
 
         baseLineAuthorInfoSetting.addToggle((toggle) =>
             toggle.setValue(this.settings.lineAuthor.show).onChange((value) => {
@@ -1084,15 +1084,15 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
 
         if (this.settings.lineAuthor.show) {
             const trackMovement = new Setting(this.containerEl)
-                .setName("Follow movement and copies across files and commits")
+                .setName("跟踪文件和提交之间的移动和复制")
                 .setDesc("")
                 .addDropdown((dropdown) => {
                     dropdown.addOptions(<
                         Record<LineAuthorFollowMovement, string>
                     >{
-                        inactive: "Do not follow (default)",
-                        "same-commit": "Follow within same commit",
-                        "all-commits": "Follow within all commits (maybe slow)",
+                        inactive: "不跟踪（默认）",
+                        "same-commit": "在同一提交内跟踪",
+                        "all-commits": "在所有提交内跟踪（可能较慢）",
                     });
                     dropdown.setValue(this.settings.lineAuthor.followMovement);
                     dropdown.onChange((value: LineAuthorFollowMovement) =>
@@ -1100,17 +1100,16 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                     );
                 });
             trackMovement.descEl.innerHTML = `
-                By default (deactivated), each line only shows the newest commit where it was changed.
+                默认情况下（停用），每行仅显示更改它的最新提交。
                 <br/>
-                With <i>same commit</i>, cut-copy-paste-ing of text is followed within the same commit and the original commit of authoring will be shown.
+                使用<i>同一提交</i>，在同一提交内跟踪文本的剪切-复制-粘贴，并显示原始作者提交。
                 <br/>
-                With <i>all commits</i>, cut-copy-paste-ing text inbetween multiple commits will be detected.
+                使用<i>所有提交</i>，将检测多个提交之间的文本剪切-复制-粘贴。
                 <br/>
-                It uses <a href="https://git-scm.com/docs/git-blame">git-blame</a> and
-                for matches (at least ${GIT_LINE_AUTHORING_MOVEMENT_DETECTION_MINIMAL_LENGTH} characters) within the same (or all) commit(s), <em>the originating</em> commit's information is shown.`;
+                它使用 <a href="https://git-scm.com/docs/git-blame">git-blame</a> 并且对于匹配（至少 ${GIT_LINE_AUTHORING_MOVEMENT_DETECTION_MINIMAL_LENGTH} 个字符）在同一（或所有）提交内，显示<em>原始</em>提交的信息。`;
 
             new Setting(this.containerEl)
-                .setName("Show commit hash")
+                .setName("显示提交哈希")
                 .addToggle((tgl) => {
                     tgl.setValue(this.settings.lineAuthor.showCommitHash);
                     tgl.onChange((value: boolean) =>
@@ -1119,15 +1118,15 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 });
 
             new Setting(this.containerEl)
-                .setName("Author name display")
-                .setDesc("If and how the author is displayed")
+                .setName("作者姓名显示")
+                .setDesc("是否以及如何显示作者")
                 .addDropdown((dropdown) => {
                     const options: Record<LineAuthorDisplay, string> = {
-                        hide: "Hide",
-                        initials: "Initials (default)",
-                        "first name": "First name",
-                        "last name": "Last name",
-                        full: "Full name",
+                        hide: "隐藏",
+                        initials: "首字母（默认）",
+                        "first name": "名",
+                        "last name": "姓",
+                        full: "全名",
                     };
                     dropdown.addOptions(options);
                     dropdown.setValue(this.settings.lineAuthor.authorDisplay);
@@ -1138,20 +1137,20 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 });
 
             new Setting(this.containerEl)
-                .setName("Authoring date display")
+                .setName("作者日期显示")
                 .setDesc(
-                    "If and how the date and time of authoring the line is displayed"
+                    "是否以及如何显示行的作者日期和时间"
                 )
                 .addDropdown((dropdown) => {
                     const options: Record<
                         LineAuthorDateTimeFormatOptions,
                         string
                     > = {
-                        hide: "Hide",
-                        date: "Date (default)",
-                        datetime: "Date and time",
-                        "natural language": "Natural language",
-                        custom: "Custom",
+                        hide: "隐藏",
+                        date: "日期（默认）",
+                        datetime: "日期和时间",
+                        "natural language": "自然语言",
+                        custom: "自定义",
                     };
                     dropdown.addOptions(options);
                     dropdown.setValue(
@@ -1175,7 +1174,7 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                 );
 
                 dateTimeFormatCustomStringSetting
-                    .setName("Custom authoring date format")
+                    .setName("自定义作者日期格式")
                     .addText((cb) => {
                         cb.setValue(
                             this.settings.lineAuthor.dateTimeFormatCustomString
@@ -1201,11 +1200,11 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
             }
 
             new Setting(this.containerEl)
-                .setName("Authoring date display timezone")
+                .setName("作者日期显示时区")
                 .addDropdown((dropdown) => {
                     const options: Record<LineAuthorTimezoneOption, string> = {
-                        "viewer-local": "My local (default)",
-                        "author-local": "Author's local",
+                        "viewer-local": "我的本地（默认）",
+                        "author-local": "作者的本地",
                         utc0000: "UTC+0000/Z",
                     };
                     dropdown.addOptions(options);
@@ -1217,14 +1216,14 @@ export class ObsidianGitSettingsTab extends PluginSettingTab {
                         this.lineAuthorSettingHandler("dateTimeTimezone", value)
                     );
                 }).descEl.innerHTML = `
-                    The time-zone in which the authoring date should be shown.
-                    Either your local time-zone (default),
-                    the author's time-zone during commit creation or
-                    <a href="https://en.wikipedia.org/wiki/UTC%C2%B100:00">UTC±00:00</a>.
+                    显示作者日期的时区。
+                    可以是您的本地时区（默认），
+                    提交创建时作者的时区或
+                    <a href="https://en.wikipedia.org/wiki/UTC%C2%B100:00">UTC±00:00</a>。
             `;
 
             const oldestAgeSetting = new Setting(this.containerEl).setName(
-                "Oldest age in coloring"
+                "着色中的最旧年龄"
             );
 
             oldestAgeSetting.descEl.innerHTML =

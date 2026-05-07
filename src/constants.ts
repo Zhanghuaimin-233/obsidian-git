@@ -9,8 +9,8 @@ export const GIT_LINE_AUTHORING_MOVEMENT_DETECTION_MINIMAL_LENGTH = 40;
 export const CONFLICT_OUTPUT_FILE = "conflict-files-obsidian-git.md";
 
 export const DEFAULT_SETTINGS: ObsidianGitSettings = {
-    commitMessage: "vault backup: {{date}}",
-    autoCommitMessage: "vault backup: {{date}}",
+    commitMessage: "保险库备份：{{date}}",
+    autoCommitMessage: "保险库备份：{{date}}",
     commitMessageScript: "",
     commitDateFormat: DATE_TIME_FORMAT_SECONDS,
     autoSaveInterval: 0,
@@ -71,24 +71,24 @@ export const DEFAULT_SETTINGS: ObsidianGitSettings = {
 
 export const SOURCE_CONTROL_VIEW_CONFIG = {
     type: "git-view",
-    name: "Source Control",
+    name: "源代码控制",
     icon: "git-pull-request",
 };
 
 export const HISTORY_VIEW_CONFIG = {
     type: "git-history-view",
-    name: "History",
+    name: "历史记录",
     icon: "history",
 };
 
 export const SPLIT_DIFF_VIEW_CONFIG = {
     type: "split-diff-view",
-    name: "Diff view",
+    name: "差异视图",
     icon: "diff",
 };
 export const DIFF_VIEW_CONFIG = {
     type: "diff-view",
-    name: "Diff View",
+    name: "差异视图",
     icon: "git-pull-request",
 };
 

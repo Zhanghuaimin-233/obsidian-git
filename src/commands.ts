@@ -14,7 +14,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "edit-gitignore",
-        name: "Edit .gitignore",
+        name: "编辑 .gitignore",
         callback: async () => {
             const path = plugin.gitManager.getRelativeVaultPath(".gitignore");
             if (!(await app.vault.adapter.exists(path))) {
@@ -31,7 +31,7 @@ export function addCommmands(plugin: ObsidianGit) {
     });
     plugin.addCommand({
         id: "open-git-view",
-        name: "Open source control view",
+        name: "打开源代码控制视图",
         callback: async () => {
             const leafs = app.workspace.getLeavesOfType(
                 SOURCE_CONTROL_VIEW_CONFIG.type
@@ -56,7 +56,7 @@ export function addCommmands(plugin: ObsidianGit) {
     });
     plugin.addCommand({
         id: "open-history-view",
-        name: "Open history view",
+        name: "打开历史视图",
         callback: async () => {
             const leafs = app.workspace.getLeavesOfType(
                 HISTORY_VIEW_CONFIG.type
@@ -82,7 +82,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "open-diff-view",
-        name: "Open diff view",
+        name: "打开差异视图",
         checkCallback: (checking) => {
             const file = app.workspace.getActiveFile();
             if (checking) {
@@ -102,7 +102,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "view-file-on-github",
-        name: "Open file on GitHub",
+        name: "在 GitHub 上打开文件",
         editorCallback: (editor, { file }) => {
             if (file) return openLineInGitHub(editor, file, plugin.gitManager);
         },
@@ -110,7 +110,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "view-history-on-github",
-        name: "Open file history on GitHub",
+        name: "在 GitHub 上打开文件历史",
         editorCallback: (_, { file }) => {
             if (file) return openHistoryInGitHub(file, plugin.gitManager);
         },
@@ -118,27 +118,27 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "pull",
-        name: "Pull",
+        name: "拉取",
         callback: () =>
             plugin.promiseQueue.addTask(() => plugin.pullChangesFromRemote()),
     });
 
     plugin.addCommand({
         id: "fetch",
-        name: "Fetch",
+        name: "获取",
         callback: () => plugin.promiseQueue.addTask(() => plugin.fetch()),
     });
 
     plugin.addCommand({
         id: "switch-to-remote-branch",
-        name: "Switch to remote branch",
+        name: "切换到远程分支",
         callback: () =>
             plugin.promiseQueue.addTask(() => plugin.switchRemoteBranch()),
     });
 
     plugin.addCommand({
         id: "add-to-gitignore",
-        name: "Add file to .gitignore",
+        name: "添加文件到 .gitignore",
         checkCallback: (checking) => {
             const file = app.workspace.getActiveFile();
             if (checking) {
@@ -153,7 +153,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "push",
-        name: "Commit-and-sync",
+        name: "提交并同步",
         callback: () =>
             plugin.promiseQueue.addTask(() =>
                 plugin.commitAndSync({ fromAutoBackup: false })
@@ -162,7 +162,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "backup-and-close",
-        name: "Commit-and-sync and then close Obsidian",
+        name: "提交并同步后关闭 Obsidian",
         callback: () =>
             plugin.promiseQueue.addTask(async () => {
                 await plugin.commitAndSync({ fromAutoBackup: false });
@@ -172,7 +172,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "commit-push-specified-message",
-        name: "Commit-and-sync with specific message",
+        name: "使用指定消息提交并同步",
         callback: () =>
             plugin.promiseQueue.addTask(() =>
                 plugin.commitAndSync({
@@ -184,7 +184,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "commit",
-        name: "Commit all changes",
+        name: "提交所有更改",
         callback: () =>
             plugin.promiseQueue.addTask(() =>
                 plugin.commit({ fromAuto: false })
@@ -193,7 +193,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "commit-specified-message",
-        name: "Commit all changes with specific message",
+        name: "使用指定消息提交所有更改",
         callback: () =>
             plugin.promiseQueue.addTask(() =>
                 plugin.commit({
@@ -205,7 +205,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "commit-smart",
-        name: "Commit",
+        name: "提交",
         callback: () =>
             plugin.promiseQueue.addTask(async () => {
                 const status = await plugin.updateCachedStatus();
@@ -220,7 +220,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "commit-staged",
-        name: "Commit staged",
+        name: "提交暂存的更改",
         checkCallback: function (checking) {
             // Don't show this command in command palette, because the
             // commit-smart command is more useful. Still provide this command
@@ -239,7 +239,7 @@ export function addCommmands(plugin: ObsidianGit) {
     if (Platform.isDesktopApp) {
         plugin.addCommand({
             id: "commit-amend-staged-specified-message",
-            name: "Amend staged",
+            name: "修改暂存的更改",
             callback: () =>
                 plugin.promiseQueue.addTask(() =>
                     plugin.commit({
@@ -254,7 +254,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "commit-smart-specified-message",
-        name: "Commit with specific message",
+        name: "使用指定消息提交",
         callback: () =>
             plugin.promiseQueue.addTask(async () => {
                 const status = await plugin.updateCachedStatus();
@@ -269,7 +269,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "commit-staged-specified-message",
-        name: "Commit staged with specific message",
+        name: "使用指定消息提交暂存的更改",
         checkCallback: function (checking) {
             // Same reason as for commit-staged
             if (checking) return false;
@@ -285,13 +285,13 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "push2",
-        name: "Push",
+        name: "推送",
         callback: () => plugin.promiseQueue.addTask(() => plugin.push()),
     });
 
     plugin.addCommand({
         id: "stage-current-file",
-        name: "Stage current file",
+        name: "暂存当前文件",
         checkCallback: (checking) => {
             const file = app.workspace.getActiveFile();
             if (checking) {
@@ -304,7 +304,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "unstage-current-file",
-        name: "Unstage current file",
+        name: "取消暂存当前文件",
         checkCallback: (checking) => {
             const file = app.workspace.getActiveFile();
             if (checking) {
@@ -317,81 +317,81 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "edit-remotes",
-        name: "Edit remotes",
+        name: "编辑远程仓库",
         callback: () =>
             plugin.editRemotes().catch((e) => plugin.displayError(e)),
     });
 
     plugin.addCommand({
         id: "remove-remote",
-        name: "Remove remote",
+        name: "移除远程仓库",
         callback: () =>
             plugin.removeRemote().catch((e) => plugin.displayError(e)),
     });
 
     plugin.addCommand({
         id: "set-upstream-branch",
-        name: "Set upstream branch",
+        name: "设置上游分支",
         callback: () =>
             plugin.setUpstreamBranch().catch((e) => plugin.displayError(e)),
     });
 
     plugin.addCommand({
         id: "delete-repo",
-        name: "CAUTION: Delete repository",
+        name: "注意：删除仓库",
         callback: async () => {
             const repoExists = await app.vault.adapter.exists(
                 `${plugin.settings.basePath}/.git`
             );
             if (repoExists) {
                 const modal = new GeneralModal(plugin, {
-                    options: ["NO", "YES"],
+                    options: ["否", "是"],
                     placeholder:
-                        "Do you really want to delete the repository (.git directory)? plugin action cannot be undone.",
+                        "您确定要删除仓库（.git 目录）吗？此操作无法撤销。",
                     onlySelection: true,
                 });
-                const shouldDelete = (await modal.openAndGetResult()) === "YES";
+                const shouldDelete = (await modal.openAndGetResult()) === "是";
                 if (shouldDelete) {
                     await app.vault.adapter.rmdir(
                         `${plugin.settings.basePath}/.git`,
                         true
                     );
                     new Notice(
-                        "Successfully deleted repository. Reloading plugin..."
+                        "成功删除仓库。正在重新加载插件..."
                     );
                     plugin.unloadPlugin();
                     await plugin.init({ fromReload: true });
                 }
             } else {
-                new Notice("No repository found");
+                new Notice("未找到仓库");
             }
         },
     });
 
     plugin.addCommand({
         id: "init-repo",
-        name: "Initialize a new repo",
+        name: "初始化新仓库",
         callback: () =>
             plugin.createNewRepo().catch((e) => plugin.displayError(e)),
     });
 
     plugin.addCommand({
         id: "clone-repo",
-        name: "Clone an existing remote repo",
+        name: "克隆现有远程仓库",
         callback: () =>
             plugin.cloneNewRepo().catch((e) => plugin.displayError(e)),
     });
 
     plugin.addCommand({
         id: "list-changed-files",
-        name: "List changed files",
+        name: "列出已更改的文件",
         callback: async () => {
             if (!(await plugin.isAllInitialized())) return;
 
             try {
                 const status = await plugin.updateCachedStatus();
                 if (status.changed.length + status.staged.length > 500) {
-                    plugin.displayError("Too many changes to display");
+                    plugin.displayError("更改太多，无法显示");
                     return;
                 }
 
@@ -404,7 +404,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "switch-branch",
-        name: "Switch branch",
+        name: "切换分支",
         callback: () => {
             plugin.switchBranch().catch((e) => plugin.displayError(e));
         },
@@ -412,7 +412,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "create-branch",
-        name: "Create new branch",
+        name: "创建新分支",
         callback: () => {
             plugin.createBranch().catch((e) => plugin.displayError(e));
         },
@@ -420,7 +420,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "delete-branch",
-        name: "Delete branch",
+        name: "删除分支",
         callback: () => {
             plugin.deleteBranch().catch((e) => plugin.displayError(e));
         },
@@ -428,15 +428,15 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "discard-all",
-        name: "CAUTION: Discard all changes",
+        name: "注意：丢弃所有更改",
         callback: async () => {
             const res = await plugin.discardAll();
             switch (res) {
                 case "discard":
-                    new Notice("Discarded all changes in tracked files.");
+                    new Notice("已丢弃所有跟踪文件的更改。");
                     break;
                 case "delete":
-                    new Notice("Discarded all files.");
+                    new Notice("已丢弃所有文件。");
                     break;
                 case false:
                     break;
@@ -448,23 +448,23 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "pause-automatic-routines",
-        name: "Pause/Resume automatic routines",
+        name: "暂停/恢复自动任务",
         callback: () => {
             const pause = !plugin.localStorage.getPausedAutomatics();
             plugin.localStorage.setPausedAutomatics(pause);
             if (pause) {
                 plugin.automaticsManager.unload();
-                new Notice(`Paused automatic routines.`);
+                new Notice(`已暂停自动任务。`);
             } else {
                 plugin.automaticsManager.reload("commit", "push", "pull");
-                new Notice(`Resumed automatic routines.`);
+                new Notice(`已恢复自动任务。`);
             }
         },
     });
 
     plugin.addCommand({
         id: "raw-command",
-        name: "Raw command",
+        name: "原始命令",
         checkCallback: (checking) => {
             const gitManager = plugin.gitManager;
             if (checking) {
@@ -480,7 +480,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "toggle-line-author-info",
-        name: "Toggle line author information",
+        name: "切换行作者信息",
         callback: () =>
             plugin.settingsTab?.configureLineAuthorShowStatus(
                 !plugin.settings.lineAuthor.show
@@ -489,7 +489,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "reset-hunk",
-        name: "Reset hunk",
+        name: "重置代码块",
         editorCheckCallback(checking, _, __) {
             if (checking) {
                 return (
@@ -504,7 +504,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "stage-hunk",
-        name: "Stage hunk",
+        name: "暂存代码块",
         editorCheckCallback: (checking, _, __) => {
             if (checking) {
                 return (
@@ -518,7 +518,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "preview-hunk",
-        name: "Preview hunk",
+        name: "预览代码块",
         editorCheckCallback: (checking, _, __) => {
             if (checking) {
                 return (
@@ -533,7 +533,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "next-hunk",
-        name: "Go to next hunk",
+        name: "跳转到下一个代码块",
         editorCheckCallback: (checking, _, __) => {
             if (checking) {
                 return (
@@ -547,7 +547,7 @@ export function addCommmands(plugin: ObsidianGit) {
 
     plugin.addCommand({
         id: "prev-hunk",
-        name: "Go to previous hunk",
+        name: "跳转到上一个代码块",
         editorCheckCallback: (checking, _, __) => {
             if (checking) {
                 return (

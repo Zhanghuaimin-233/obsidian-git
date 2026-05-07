@@ -45,26 +45,26 @@ export class DiscardModal extends Modal {
         let titlePart = "";
         if (this.path != "") {
             if (sum > 1) {
-                titlePart = `files in "${this.path}"`;
+                titlePart = `文件在 "${this.path}"`;
             } else {
                 titlePart = `"${this.path}"`;
             }
         }
         titleEl.setText(
-            `${this.discardCount == 0 ? "Delete" : "Discard"} ${titlePart}`
+            `${this.discardCount == 0 ? "删除" : "丢弃"} ${titlePart}`
         );
         if (this.deleteCount > 0) {
             contentEl
                 .createEl("p")
                 .setText(
-                    `Are you sure you want to DELETE the ${plural(this.deleteCount, "untracked file")}? They are deleted according to your Obsidian trash settting.`
+                    `您确定要删除 ${plural(this.deleteCount, "个未跟踪文件")} 吗？它们将根据您的 Obsidian 回收站设置被删除。`
                 );
         }
         if (this.discardCount > 0) {
             contentEl
                 .createEl("p")
                 .setText(
-                    `Are you sure you want to discard ALL changes in ${plural(this.discardCount, "tracked file")}?`
+                    `您确定要丢弃 ${plural(this.discardCount, "个跟踪文件")} 中的所有更改吗？`
                 );
         }
         const div = contentEl.createDiv({ cls: "modal-button-container" });
@@ -72,7 +72,7 @@ export class DiscardModal extends Modal {
         if (this.deleteCount > 0) {
             const discardAndDelete = div.createEl("button", {
                 cls: "mod-warning",
-                text: `${this.discardCount > 0 ? "Discard" : "Delete"} all ${plural(sum, "file")}`,
+                text: `${this.discardCount > 0 ? "丢弃" : "删除"}所有 ${plural(sum, "个文件")}`,
             });
             discardAndDelete.addEventListener("click", () => {
                 if (this.resolve) this.resolve("delete");
@@ -87,7 +87,7 @@ export class DiscardModal extends Modal {
         if (this.discardCount > 0) {
             const discard = div.createEl("button", {
                 cls: "mod-warning",
-                text: `Discard all ${plural(this.discardCount, "tracked file")}`,
+                text: `丢弃所有 ${plural(this.discardCount, "个跟踪文件")}`,
             });
             discard.addEventListener("click", () => {
                 if (this.resolve) this.resolve("discard");
@@ -100,7 +100,7 @@ export class DiscardModal extends Modal {
         }
 
         const close = div.createEl("button", {
-            text: "Cancel",
+            text: "取消",
         });
         close.addEventListener("click", () => {
             if (this.resolve) this.resolve(false);
